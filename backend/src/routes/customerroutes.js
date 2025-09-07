@@ -8,7 +8,7 @@ const router = Router();
 router.use(authMiddleware);
 
 
-router.post('/',authMiddleware, customerController.createCustomer);
+router.post('/', customerController.createCustomer);
 router.get('/', customerController.listCustomers);
 router.get('/:id', customerController.getCustomer);
 router.put('/:id', customerController.updateCustomer);
