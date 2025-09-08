@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import API from '../utils/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useThemeStore } from '../store/useThemeStore';
+import toast from 'react-hot-toast';
 
 type FormState = { name: string; email?: string; phone?: string; company?: string };
 
@@ -30,12 +31,14 @@ export default function CustomerForm() {
     try {
       if (id && id !== 'new') {
         await API.put(`/customers/${id}`, form);
+        toast.success('Customer updated');
       } else {
         await API.post('/customers', form);
+        toast.success('Customer created');
       }
       navigate('/customers');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Save failed');
+      toast.error(err.response?.data?.message || 'Save failed');
     }
   };
 

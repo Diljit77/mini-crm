@@ -44,9 +44,8 @@ res.status(500).json({ message: 'Server error' });
 }
 
 
-export async function updateLead(req,) {
-const { error } = leadSchema.validate(req.body);
-if (error) return res.status(400).json({ message: error.details[0].message });
+export async function updateLead(req,res) {
+
 try {
 const customer = await ensureCustomerOwnership(req);
 if (!customer) return res.status(404).json({ message: 'Customer not found or forbidden' });
@@ -56,8 +55,8 @@ Object.assign(lead, req.body);
 await lead.save();
 res.json(lead);
 } catch (err) {
-// eslint-disable-next-line no-console
-console.error(err);
+
+console.log(err);
 res.status(500).json({ message: 'Server error' });
 }
 }

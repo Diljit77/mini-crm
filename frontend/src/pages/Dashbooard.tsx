@@ -43,12 +43,15 @@ export default function Dashboard() {
 
       {/* Stats cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="card p-4 bg-base-100 shadow flex flex-col justify-between">
+        {/* Customers Card → clickable */}
+        <Link to="/customers" className="card p-4 bg-base-100 shadow flex flex-col justify-between hover:shadow-lg transition">
           <div>
             <div className="text-sm">Customers</div>
             <div className="text-2xl font-bold">{stats.customers}</div>
           </div>
-        </div>
+        </Link>
+
+        {/* Leads Card (you could also link it if you want) */}
         <div className="card p-4 bg-base-100 shadow flex flex-col justify-between">
           <div>
             <div className="text-sm">Leads</div>
@@ -56,7 +59,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
 
       {leadsData.length > 0 && (
         <div className="card bg-base-100 p-6 shadow max-w-md mx-auto">
@@ -75,7 +77,6 @@ export default function Dashboard() {
           />
         </div>
       )}
-
 
       {stats.customers === 0 && (
         <div className="card bg-base-100 p-6 text-center shadow mt-6">

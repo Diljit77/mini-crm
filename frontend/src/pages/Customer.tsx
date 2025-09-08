@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import API from '../utils/api'
 import Pagination from '../component/Pagination'
@@ -7,14 +7,14 @@ import { useThemeStore } from '../store/useThemeStore';
 interface Customer { _id:string; name:string; email?:string; phone?:string; company?:string }
 
 export default function Customers(){
-   const { theme } = useThemeStore();
+  const { theme } = useThemeStore();
   const [customers, setCustomers] = useState<Customer[]>([])
   const [q, setQ] = useState('')
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
   const limit = 10
 
-  useEffect(()=>{ fetchCustomers() }, [page])
+  useEffect(()=>{ fetchCustomers() }, [page, q])  // 👈 re-fetch when page or query changes
 
   async function fetchCustomers(){
     try{
@@ -37,8 +37,13 @@ export default function Customers(){
       </div>
 
       <div className="mb-4 flex gap-2">
-        <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search" className="input input-bordered" />
-        <button className="btn" onClick={()=>{ setPage(1); fetchCustomers() }}>Search</button>
+        {/* Instant search on typing */}
+        <input
+          value={q}
+          onChange={e => { setQ(e.target.value); setPage(1) }}
+          placeholder="Search"
+          className="input input-bordered"
+        />
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
@@ -55,7 +60,9 @@ export default function Customers(){
         ))}
       </div>
 
-      <Pagination total={total} page={page} setPage={setPage} limit={limit} />
+      {total > limit && (
+        <Pagination total={total} page={page} setPage={setPage} limit={limit} />
+      )}
     </div>
   )
 }

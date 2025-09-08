@@ -16,6 +16,11 @@ const token = localStorage.getItem('token')
 if (!token) return <Navigate to='/' />
 return children
 }
+function AuthRoute({ children }: { children:ReactNode }){
+const token = localStorage.getItem('token')
+if (token) return <Navigate to='/dashboard' />
+return children;
+}
 
 
 export default function App(){
@@ -29,8 +34,8 @@ return (
 <>
 <Toaster />
 <Routes>
-<Route path='/' element={<Login/>} />
-<Route path='/signup' element={<SignUp/>} />
+<Route path='/' element={<AuthRoute><Login/></AuthRoute>} />
+<Route path='/signup' element={<AuthRoute><SignUp/></AuthRoute>} />
 
 
 <Route path='/' element={<Layout/>}>

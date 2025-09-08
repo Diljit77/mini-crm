@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import API from '../utils/api'
 import { useThemeStore } from '../store/useThemeStore';
+import toast from 'react-hot-toast';
 
 type Lead = { _id:string; title:string; description?:string; status:string; value:number }
 
@@ -28,17 +29,22 @@ export default function CustomerDetail(){
       await API.post(`/customers/${id}/leads`, form)
       setForm({ title:'', description:'', status:'New', value:0 })
       setCreating(false)
-      load()
-    }catch(err){ alert('Create failed') }
+      load();
+      toast .success('Lead created');
+    }catch(err){ toast.error('Create failed') }
   }
 
   async function deleteLead(leadId:string){
     if (!confirm('Delete lead?')) return
-    try{ await API.delete(`/customers/${id}/leads/${leadId}`); load() }catch(err){ alert('Delete failed') }
+    try{ await API.delete(`/customers/${id}/leads/${leadId}`); load() 
+  toast.success("deleted successfully")
+}catch(err){ toast.error('Delete failed') }
   }
 
   async function updateLead(leadId:string, data: Partial<Lead>){
-    try{ await API.put(`/customers/${id}/leads/${leadId}`, data); load() }catch(err){ alert('Update failed') }
+    try{ await API.put(`/customers/${id}/leads/${leadId}`, data); load()
+  toast.success("updated successfully")
+ }catch(err){ toast.error('Update failed') }
   }
 
   const filtered = leads.filter(l => filter === 'All' ? true : l.status === filter)
